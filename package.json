@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "dev:build": "webpack --watch --mode development"
+    "dev:build": "webpack --watch --mode development",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
@@ -34,7 +35,8 @@
   "husky": {
     "hooks": {
       "pre-commit": "git-branch-is -rI \"^(develop|master)\" && lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-push": "git-branch-is -rI \"^(develop|master)\""
     }
   },
   "lint-staged": {
