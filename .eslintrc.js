@@ -13,5 +13,7 @@ module.exports = {
   rules: {
     '@typescript-eslint/explicit-function-return-type': ['error'],
     'require-jsdoc': ['off'],
+    'max-len': ['error', { code: 120, tabWidth: 2 }],
+    'object-curly-spacing': ['error', 'always', { arraysInObjects: false }],
   },
 };
