@@ -1,3 +1,5 @@
 export default class Arch {
-  constructor() {}
+  constructor() {
+    console.log('arc');
+  }
 }
