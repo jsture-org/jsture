@@ -23,6 +23,7 @@
     "eslint": "^7.32.0",
     "eslint-config-google": "^0.14.0",
     "git-branch-is": "^4.0.0",
+    "husky": "^7.0.2",
     "lint-staged": "^11.1.2",
     "mini-css-extract-plugin": "^2.2.2",
     "prettier": "^2.3.2",
