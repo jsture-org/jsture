@@ -15,5 +15,6 @@ module.exports = {
     'require-jsdoc': ['off'],
     'max-len': ['error', { code: 120, tabWidth: 2 }],
     'object-curly-spacing': ['error', 'always', { arraysInObjects: false }],
+    'no-console': ['error'],
   },
 };
