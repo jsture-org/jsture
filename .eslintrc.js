@@ -1,9 +1,15 @@
+// eslint-disable-next-line no-undef
 module.exports = {
   env: {
     browser: true,
     es2021: true,
   },
-  extends: ['google'],
+  extends: [
+    'google',
+    'eslint:recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 12,
@@ -17,4 +23,5 @@ module.exports = {
     'object-curly-spacing': ['error', 'always', { arraysInObjects: false }],
     'no-console': ['error'],
   },
+  ignorePatterns: ['webpack.config.js'],
 };

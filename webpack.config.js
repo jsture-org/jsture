@@ -1,18 +1,16 @@
-const path = require("path");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 module.exports = (env, options) => {
   return {
     mode: options.mode,
     entry: {
-      index: [
-        path.resolve(__dirname, "src/index.ts"),
-        path.resolve(__dirname, "public/css/index.css"),
-      ],
+      index: [path.resolve(__dirname, 'src/index.ts'), path.resolve(__dirname, 'public/css/index.css')],
     },
     plugins: [
       new MiniCssExtractPlugin({
-        filename: "css/[name].bundle.css",
+        filename: 'css/[name].bundle.css',
       }),
     ],
     module: {
@@ -20,29 +18,26 @@ module.exports = (env, options) => {
         {
           test: /\.(js|ts)$/,
           use: {
-            loader: "babel-loader",
+            loader: 'babel-loader',
             options: {
-              presets: ["@babel/preset-env", "@babel/preset-typescript"],
+              presets: ['@babel/preset-env', '@babel/preset-typescript'],
             },
           },
-          exclude: "/node_modules/",
+          exclude: '/node_modules/',
         },
         {
           test: /\.css$/,
-          use: [
-            MiniCssExtractPlugin.loader,
-            { loader: "css-loader", options: { importLoaders: 1 } },
-          ],
+          use: [MiniCssExtractPlugin.loader, { loader: 'css-loader', options: { importLoaders: 1 } }],
         },
       ],
     },
     resolve: {
-      extensions: [".ts", ".js"],
+      extensions: ['.ts', '.js'],
     },
     output: {
-      path: path.resolve(__dirname, "dist"),
-      filename: "[name].bundle.js",
+      path: path.resolve(__dirname, 'dist'),
+      filename: '[name].bundle.js',
     },
-    devtool: options.mode === "development" ? "eval-source-map" : "none",
+    devtool: options.mode === 'development' ? 'eval-source-map' : 'none',
   };
 };
