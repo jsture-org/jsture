@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-undef
 module.exports = {
   env: {
     browser: true,
@@ -23,5 +22,5 @@ module.exports = {
     'object-curly-spacing': ['error', 'always', { arraysInObjects: false }],
     'no-console': ['error'],
   },
-  ignorePatterns: ['webpack.config.js'],
+  ignorePatterns: ['webpack.config.js', '.eslintrc.js'],
 };

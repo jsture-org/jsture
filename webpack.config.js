@@ -1,7 +1,6 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 module.exports = (env, options) => {
   return {
     mode: options.mode,
