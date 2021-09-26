@@ -1,7 +1,10 @@
 export enum JstureType {
-  DRAG = 'DRAG',
+  DRAG_START = 'DRAG_START',
+  DRAG_MOVE = 'DRAG_MOVE',
+  DRAG_END = 'DRAG_END',
 }
 
 export interface Jsture {
-  type: JstureType;
+  readonly type: JstureType;
+  readonly elementId: string;
 }

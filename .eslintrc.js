@@ -21,6 +21,9 @@ module.exports = {
     'max-len': ['error', { code: 120, tabWidth: 2 }],
     'object-curly-spacing': ['error', 'always', { arraysInObjects: false }],
     'no-console': ['error'],
+    'arrow-parens': ['off'],
+    indent: ['off'],
+    'comma-dangle': ['off'],
   },
   ignorePatterns: ['webpack.config.js', '.eslintrc.js'],
 };

@@ -1,9 +1,46 @@
-import { Component } from './component';
+import { Jsture, JstureType } from '../core/jsture/jsture';
+import { Synthesizer } from '../core/synthesizer/synthesizer';
+import { filter } from 'rxjs/operators';
 
-export class Draggable implements Component {
-  attach(element: Element): void {
+// TODO: 과연 component 타입으로 추상화 할 필요가 있을까??
+// 제스처 이벤트 발생하는거 까지가 우리의 역할이고 사실 컴포넌트는 자유롭게 구현 가능한 것이 더 취지에 맞음
+export class Draggable<T = HTMLElement> {
+  constructor(private element: T, private synthesizer: Synthesizer, private readonly id: string) {
+    this.synthesizer.jsture$
+      .pipe(filter(jsture => !!jsture && this.id === jsture.elementId))
+      .subscribe(jsture => this.attach(jsture));
+  }
+
+  private attach(jsture: Jsture): void {
+    switch (jsture.type) {
+      case JstureType.DRAG_START:
+        this.onDragStart(jsture);
+        break;
+      case JstureType.DRAG_MOVE:
+        this.onDragMove(jsture);
+        break;
+      case JstureType.DRAG_END:
+        this.onDragEnd(jsture);
+        break;
+      default:
+        // TODO: define error message
+        throw Error('');
+    }
+  }
+
+  private onDragMove(jsture: Jsture): void {
     // eslint-disable-next-line no-console
-    console.log('attach', element);
+    console.log('onDragMove', jsture);
+  }
+
+  private onDragStart(jsture: Jsture): void {
+    // eslint-disable-next-line no-console
+    console.log('onDragStart', jsture);
+  }
+
+  private onDragEnd(jsture: Jsture): void {
+    // eslint-disable-next-line no-console
+    console.log('onDragEnd', jsture);
   }
 }
 
