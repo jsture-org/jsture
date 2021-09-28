@@ -3,7 +3,12 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: ['google'],
+  extends: [
+    'google',
+    'eslint:recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 12,
@@ -16,5 +21,9 @@ module.exports = {
     'max-len': ['error', { code: 120, tabWidth: 2 }],
     'object-curly-spacing': ['error', 'always', { arraysInObjects: false }],
     'no-console': ['error'],
+    'arrow-parens': ['off'],
+    indent: ['off'],
+    'comma-dangle': ['off'],
   },
+  ignorePatterns: ['webpack.config.js', '.eslintrc.js'],
 };
