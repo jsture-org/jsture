@@ -1,8 +1,9 @@
 import { Trace, TraceType } from '../trace/trace';
 import { Generator } from '../generator/generator';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Jsture, JstureType } from '../jsture/jsture';
-import { makeJsture } from '../jsture/drag';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { DragJsture, Jsture, JstureType } from '../jsture/jsture';
+import { concatMap, filter } from 'rxjs/operators';
+import { isNil } from 'lodash';
 
 interface Config {
   // cattus: tap 인지 hold 인지 구별하기 위한 경계값
@@ -44,34 +45,36 @@ class ComponentState {
 }
 
 export class Synthesizer {
-  public jsture$: Observable<Jsture>;
+  public drag$ = new Observable<DragJsture>();
 
+  private trace$ = new Observable<Trace>();
   private elementMap: { [key: string]: ComponentState } = {};
 
   private readonly config: Config = { tapThreshold: 100 };
 
   constructor(private generator: Generator, config?: Config) {
     this.config = { ...this.config, ...config };
-
-    this.jsture$ = new Observable<Jsture>(subscriber => {
-      this.generator.trace$.subscribe(trace => {
+    this.trace$ = this.generator.trace$.pipe(
+      concatMap(trace => {
         const elementId = this.getElementId(trace);
 
         if (!this.elementMap[elementId]) {
           this.elementMap[elementId] = new ComponentState({ ...this.config });
         }
 
-        const jsture = this.synthesize(trace);
+        return of(trace);
+      })
+    );
 
-        if (jsture) {
-          subscriber.next(jsture);
-        }
+    this.drag$ = this.getJstureObservable(subscriber => {
+      this.trace$.subscribe(trace => {
+        subscriber.next(this.synthesizeDrag(trace));
       });
     });
   }
 
-  private synthesize(trace: Trace): Jsture | null {
-    let jsture: null | Jsture = null;
+  private synthesizeDrag(trace: Trace): DragJsture | null {
+    let jsture: null | DragJsture = null;
     let jstureType: null | JstureType = null;
     const traceType = trace.type;
     const elementId = this.getElementId(trace);
@@ -94,18 +97,17 @@ export class Synthesizer {
     }
 
     if (jstureType) {
-      jsture = makeJsture({ type: jstureType, elementId });
+      jsture = { type: jstureType, elementId, event: trace.event as TouchEvent | MouseEvent };
     }
-
-    // if (!jsture) {
-    // TODO: define error message
-    // throw Error('');
-    // }
 
     return jsture;
   }
 
   private getElementId(trace: Trace): string {
     return (trace.event.target as HTMLElement).dataset.jstureId;
+  }
+
+  private getJstureObservable(cb: (subscriber: any) => void): Observable<Jsture<any>> {
+    return new Observable<DragJsture>(cb).pipe(filter(jsture => !isNil(jsture)));
   }
 }
