@@ -3,3 +3,6 @@
 **/webpack.config.js
 node_modules
 src
+**/babel.config.js
+**/commitlint.config.js
+dist
