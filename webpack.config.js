@@ -1,17 +1,27 @@
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = (env, options) => {
-  return {
+  const ret = {
+    optimization: {
+      minimize: true,
+      minimizer: [new TerserPlugin({ include: /\.min\.js$/ })],
+    },
     mode: options.mode,
     entry: {
-      index: [path.resolve(__dirname, 'src/index.ts'), path.resolve(__dirname, 'public/css/index.css')],
+      lib: [path.resolve(__dirname, 'src/index.ts')],
+      'lib.min': [path.resolve(__dirname, 'src/index.ts')],
     },
-    plugins: [
-      new MiniCssExtractPlugin({
-        filename: 'css/[name].bundle.css',
-      }),
-    ],
+    output: {
+      path: path.resolve(__dirname, '_bundles'),
+      filename: '[name].js',
+      libraryTarget: 'umd',
+      library: 'Jsture',
+      umdNamedDefine: true,
+    },
+    resolve: {
+      extensions: ['.ts', '.js'],
+    },
     module: {
       rules: [
         {
@@ -24,19 +34,13 @@ module.exports = (env, options) => {
           },
           exclude: '/node_modules/',
         },
-        {
-          test: /\.css$/,
-          use: [MiniCssExtractPlugin.loader, { loader: 'css-loader', options: { importLoaders: 1 } }],
-        },
       ],
     },
-    resolve: {
-      extensions: ['.ts', '.js'],
-    },
-    output: {
-      path: path.resolve(__dirname, 'dist'),
-      filename: '[name].bundle.js',
-    },
-    devtool: options.mode === 'development' ? 'eval-source-map' : 'none',
   };
+
+  if (options.mode === 'development') {
+    ret.devtool = 'eval-source-map';
+  }
+
+  return ret;
 };
